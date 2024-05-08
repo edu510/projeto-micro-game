@@ -58,7 +58,10 @@ def desenha_quadrado(tile_x, tile_y, tileWidth, tileHeight):
 # Define os pinos do Raspberry Pi Pico conectados ao barramento I2C 0
 i2c0_slc_pin = 5
 i2c0_sda_pin = 4
-botao_pin = 10
+botao_up_pin = 6
+botao_down_pin =7
+botao_left_pin =8
+botao_right_pin = 9
 botao2_pin = 12
 
 vol_max = 65535
@@ -204,7 +207,10 @@ obstacle_last_state = 0
 enable_irq = False
 
 # Configura o pino da saída digital do sensor
-botao = Pin(botao_pin, Pin.IN, Pin.PULL_UP)
+botao_up = Pin(botao_up_pin, Pin.IN, Pin.PULL_UP)
+botao_down = Pin(botao_down_pin, Pin.IN, Pin.PULL_UP)
+botao_right = Pin(botao_right_pin, Pin.IN, Pin.PULL_UP)
+botao_left = Pin(botao_left_pin, Pin.IN, Pin.PULL_UP)
 botao2 = Pin(botao2_pin, Pin.IN, Pin.PULL_UP)
 
 screenWidth = 128
@@ -232,8 +238,12 @@ display.fill(0)   # preenche toda a tela com cor =
 
 #display.show()                         # escreve o conteúdo do FrameBuffer na memória do display
 
-botao_anterior = 0
+botao_up_anterior = 0
+botao_down_anterior = 0
+botao_left_anterior = 0
+botao_right_anterior = 0
 botao2_anterior = 0
+
 jogador1 = True
 
 def playtone(frequency):
@@ -315,7 +325,7 @@ def ganhador():
     col = checar_colunas()
     if lin > 0:
         utime.sleep_ms(tempo)
-        print("linhas")
+#         print("linhas")
         display.fill(0)
         if lin==1:
             display.text("Ganhou o X!", 16, 32)
@@ -329,7 +339,7 @@ def ganhador():
     elif col > 0:
         utime.sleep_ms(tempo)
         display.fill(0)
-        print("colunas")
+#         print("colunas")
         if col==1:
             display.text("Ganhou o X!", 16, 32)
         else:
@@ -341,7 +351,7 @@ def ganhador():
     elif diag > 0:
         utime.sleep_ms(tempo)
         display.fill(0)
-        print("diagonais")
+#         print("diagonais")
         if diag ==1:
             display.text("Ganhou o X!", 16, 32)
         else:
@@ -351,7 +361,7 @@ def ganhador():
         resetar()
     
     elif contar_jogadas >= 9:
-        print("empate")
+#         print("empate")
         display.fill(0)
         display.text("Empatou!", 16, 32)
         display.show()
@@ -363,17 +373,32 @@ clear_display()
 #display.show()
 
 while True:
-    if botao.value() == 0 and botao_anterior == 1:
+    if botao_up.value() == 0 and botao_up_anterior == 1:
+        
+        y = y - 1
+        if y < 0:
+            y = 2      
+        clear_display()
+        
+    if botao_down.value() == 0 and botao_down_anterior == 1:
+# y cresce ao descer a tela
+        y = y + 1
+        if y > 2:
+            y = 0
+
+        clear_display()       
+    if botao_left.value() == 0 and botao_left_anterior == 1:
+        x = x - 1
+        if x < 0:
+            x = 2      
+        clear_display()
+        
+    if botao_right.value() == 0 and botao_right_anterior == 1:
         
         x = x + 1
         if x > 2:
             x = 0
-            y = y + 1
-            if y > 2:
-                x = 0
-                y = 0
-        #desenha_quadrado(x, y, tileWidth, tileHeight)
-        #display.show()
+   
         clear_display()
         
     if botao2.value() == 0 and botao2_anterior == 1:    
@@ -396,7 +421,11 @@ while True:
    
         #print(jogadas)
     
-    botao_anterior = botao.value()
+    botao_up_anterior = botao_up.value()
+    botao_down_anterior = botao_down.value()
+    botao_left_anterior = botao_left.value()
+    botao_right_anterior = botao_right.value()
+    
     botao2_anterior = botao2.value()
     utime.sleep_ms(20)
     
