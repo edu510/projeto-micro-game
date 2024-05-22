@@ -2,7 +2,7 @@
 
 Botão: (16, 12, 33), borda: (20, 16)
 
-OLED: (27, 15, 16), com chip: (34, 28)
+OLED: (27, 15, 16), com chip: (34, 28), pinos: (13, 3, 14)
 
 Buzzer: diâmetro 12, altura 16
 
