@@ -1,4 +1,3 @@
-![image](https://github.com/edu510/projeto-micro-game/assets/15809319/92fa7134-224a-4ec6-9671-2d99eab199f0)# projeto-micro-game
 
 O projeto consiste em um console para rodar jogos simples, com uma tela pequena e poucos botões.
 
